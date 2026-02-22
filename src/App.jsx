@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { TodoItem } from "./components/TodoItem";
 import { AddTodo } from "./components/AddTodo";
 import { ToggleTheme } from "./components/ToggleTheme";
 import { getInitialTheme } from "./helpers/getInitialTheme";
@@ -7,9 +6,12 @@ import { toggleTheme } from "./helpers/toggleTheme";
 import { DeleteConfirmModal } from "./components/DeleteConfirmModal";
 import { useTodoManagement } from "./hooks/useTodoManagement";
 import { Header } from "./components/Header";
+import { TodoList } from "./components/ToduList";
+import { TodoFilter } from "./components/TodoFilter";
 
 function App() {
   const [theme, setTheme] = useState(getInitialTheme());
+  const [watchedFilter, setWatchedFilter] = useState("all");
 
   const {
     todos,
@@ -24,27 +26,31 @@ function App() {
 
   const hasCompletedTodo = todos.some((todo) => todo.completed);
 
+  const filteredTodos = todos.filter((todo) => {
+    if (watchedFilter === "comleted") return todo.completed;
+    if (watchedFilter === "actived") return !todo.completed;
+    return true;
+  });
+
   return (
     <div
       data-theme={theme}
-      className="flex flex-col min-h-screen  justify-center items-center bg-page-light dark:bg-page-dark p-6"
+      className="flex flex-col min-h-screen  justify-center items-center bg-page-light dark:bg-gray-900 p-6"
     >
       <ToggleTheme toggleTheme={() => toggleTheme(setTheme)} theme={theme} />
       <div className="mx-auto flex flex-col gap-3">
         <Header />
         <AddTodo onAdd={onAdd} />
-
-        <div className="flex flex-col gap-3">
-          {todos.map((todo) => (
-            <TodoItem
-              key={todo.id}
-              todo={todo}
-              onDelete={onDelete}
-              onToggleComplete={toggleComplete}
-              onUpdateTodo={onUpdateTodo}
-            />
-          ))}
-        </div>
+        <TodoFilter
+          watchedFilter={watchedFilter}
+          setWatchedFilter={setWatchedFilter}
+        />
+        <TodoList
+          todos={filteredTodos}
+          onDelete={onDelete}
+          toggleComplete={toggleComplete}
+          onUpdateTodo={onUpdateTodo}
+        />
       </div>
       {hasCompletedTodo && (
         <button

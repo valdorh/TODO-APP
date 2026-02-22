@@ -26,7 +26,7 @@ export const TodoItem = ({
 
   return (
     <div
-      className="group flex items-center min-w-100
+      className="group flex items-center sm:min-w-100
     justify-between px-4 py-2 gap-3 bg-white dark:bg-page-dark rounded-lg  shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100"
     >
       <div className="flex gap-3 w-full">

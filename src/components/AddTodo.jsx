@@ -47,12 +47,12 @@ export function AddTodo({ onAdd }) {
         </button>
       </div>
       {showDeadlineInput && (
-        <div className="flex items-center gap-2  text-gray-300  cursor-pointer">
+        <div className="flex items-center gap-2 dark:bg-gray-800 dark:text-gray-300  cursor-pointer">
           <input
             type="datetime-local"
             value={deadline}
             onChange={(e) => setDedline(e.target.value)}
-            className="p-2 rounded-md flex-1"
+            className="p-2 rounded-md flex-1 border border-blue-400 dark:border-0 mr-2"
           />
           <OkCancel
             onOkClick={handleSubmit}
@@ -62,7 +62,7 @@ export function AddTodo({ onAdd }) {
       )}
       {!showDeadlineInput && (
         <button
-          className="self-start text-blue-300 hover:text-blue-500 cursor-pointer"
+          className="self-start text-blue-700 dark:text-blue-300 hover:text-blue-500 cursor-pointer"
           type="button"
           onClick={() => {
             setShowDeadlineInput(true);
