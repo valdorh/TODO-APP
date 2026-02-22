@@ -70,6 +70,34 @@ function App() {
     }
   };
 
+  const onUpdateTodo = async (id, updateText, updateDeadline) => {
+    //console.log(id, updateText, updateDeadline);
+    const todoUpdate = todos.find((todo) => todo.id === id);
+    if (!todoUpdate) return;
+
+    const updatedTodo = {
+      ...todoUpdate,
+      text: updateText,
+      deadline: updateDeadline,
+    };
+    const updatedTodos = todos.map((todo) =>
+      todo.id === id ? updatedTodo : todo,
+    );
+    setTodos(updatedTodos);
+
+    try {
+      await fetch(`${API_URL}/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedTodo),
+      });
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedTodos));
+    } catch (error) {
+      console.error("Ошибка изменения: ", error);
+      setTodos(todos);
+    }
+  };
+
   const toggleComplete = async (id) => {
     const todoUpdate = todos.find((todo) => todo.id === id);
     if (!todoUpdate) return;
@@ -162,6 +190,7 @@ function App() {
           </span>
         </h1>
         <AddTodo onAdd={onAdd} />
+
         <div className="flex flex-col gap-3">
           {todos.map((todo) => (
             <TodoItem
@@ -169,6 +198,7 @@ function App() {
               todo={todo}
               onDelete={onDelete}
               onToggleComplete={toggleComplete}
+              onUpdateTodo={onUpdateTodo}
             />
           ))}
         </div>
