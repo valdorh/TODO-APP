@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { OkCancel } from "./OkCancel";
 
 export function AddTodo({ onAdd }) {
   const [text, setText] = useState("");
@@ -53,16 +54,10 @@ export function AddTodo({ onAdd }) {
             onChange={(e) => setDedline(e.target.value)}
             className="p-2 rounded-md flex-1"
           />
-          <button
-            className="p-2 text-gray-300 hover:text-gray-500 cursor-pointer"
-            type="button"
-            onClick={() => {
-              setDedline("");
-              setShowDeadlineInput(false);
-            }}
-          >
-            Отменить
-          </button>
+          <OkCancel
+            onOkClick={handleSubmit}
+            onCancelClick={() => setShowDeadlineInput(false)}
+          />
         </div>
       )}
       {!showDeadlineInput && (
